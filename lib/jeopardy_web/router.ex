@@ -18,6 +18,8 @@ defmodule JeopardyWeb.Router do
     pipe_through :browser
 
     live "/", PageLive, :index
+    get "/jeopardy/:game_id", JeopardyController, :resume_game
+    get "/jeopardy/", JeopardyController, :create_game
   end
 
   # Other scopes may use custom stacks.

@@ -11,6 +11,12 @@ defmodule Jeopardy.Application do
       JeopardyWeb.Telemetry,
       # Start the PubSub system
       {Phoenix.PubSub, name: Jeopardy.PubSub},
+      {
+        DynamicSupervisor,
+        name: Jeopardy.DynamicSupervisor, strategy: :one_for_one
+      },
+      # TODO: maybe make this map a struct
+      {Jeopardy.GameCatalog, %{}},
       # Start the Endpoint (http/https)
       JeopardyWeb.Endpoint
       # Start a worker by calling: Jeopardy.Worker.start_link(arg)

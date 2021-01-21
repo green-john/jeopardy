@@ -1,16 +1,38 @@
 defmodule Jeopardy.Core do
-
   def extract_question(board, category, points) do
-    if not Map.has_key?(board.questions, category) do
-      {board, []}
-    else
-      q_in_cat = board.questions[category]
-      qa = Map.get(q_in_cat, points, [])
-      questions = Map.put(board.questions, category, Map.delete(q_in_cat, points))
-      {
-        %{board | questions: questions},
-        qa
-      }
+    IO.inspect(category)
+    IO.inspect(points)
+    IO.inspect(board)
+    IO.inspect(Map.has_key?(board.questions, category))
+
+    case Map.has_key?(board.questions, category) do
+      true ->
+        q_in_cat = board.questions[category]
+        qa = Map.get(q_in_cat, points, [])
+        questions = Map.put(board.questions, category, Map.delete(q_in_cat, points))
+
+        {
+          %{board | questions: questions},
+          qa
+        }
+
+      false ->
+        {board, []}
+    end
+  end
+
+  def question_available?(board, category, points) do
+    # IO.inspect(game)
+
+    case Map.get(board.questions, category) do
+      nil ->
+        false
+
+      _questions ->
+        case Map.get(board.questions[category], points) do
+          nil -> false
+          _qa -> true
+        end
     end
   end
 
@@ -25,4 +47,3 @@ defmodule Jeopardy.Core do
     %{game | scores: scores, selected: nil}
   end
 end
-

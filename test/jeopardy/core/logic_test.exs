@@ -15,7 +15,7 @@ defmodule Jeopardy.CoreTest do
   test "create board with one categories" do
     board = Board.new()
 
-    assert board.categories == ["Geology"]
+    assert List.first(board.categories) == "Geology"
 
     questions = Map.get(board.questions, "Geology")
 
@@ -40,33 +40,37 @@ defmodule Jeopardy.CoreTest do
   end
 
   test "create a new game" do
-    game = GameStruct.new(["a", "b"])
+    game = GameStruct.new("g1", ["a", "b"])
     assert length(game.players) == 2
     assert map_size(game.scores) == 2
+
+    assert Core.question_available?(game.board, "Geology", 100)
   end
 
   test "play first turn (select square)" do
-    game = GameStruct.new(["a", "b"])
+    game = GameStruct.new("g1", ["a", "b"])
     game = Core.select_question(game, "Geology", 100)
     [q: q, a: a, points: points] = game.selected
     assert is_bitstring(q)
     assert is_bitstring(a)
     assert points == 100
+    assert not Core.question_available?(game.board, "Geology", 100)
   end
 
   test "play second turn (select turn)" do
     game =
-      GameStruct.new(["a", "b"])
+      GameStruct.new("g1", ["a", "b"])
       |> Core.select_question("Geology", 100)
       |> Core.user_answered("a")
 
     assert game.selected == nil
     assert game.scores["a"] == 100
+    assert not Core.question_available?(game.board, "Geology", 100)
   end
 
   test "play multiple turns" do
     game =
-      GameStruct.new(["a", "b"])
+      GameStruct.new("g1", ["a", "b"])
       |> Core.select_question("Geology", 100)
       |> Core.user_answered("a")
       |> Core.select_question("Geology", 200)
@@ -77,5 +81,9 @@ defmodule Jeopardy.CoreTest do
     assert game.selected == nil
     assert game.scores["a"] == 400
     assert game.scores["b"] == 200
+
+    assert not Core.question_available?(game.board, "Geology", 100)
+    assert not Core.question_available?(game.board, "Geology", 200)
+    assert not Core.question_available?(game.board, "Geology", 300)
   end
 end
