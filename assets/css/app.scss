@@ -124,6 +124,15 @@ body {
   padding: 0.4rem;
 }
 
+.question-display {
+    background-color: rgb(64, 50, 255);
+    color: rgb(240, 240, 240);
+    font-size: 5rem;
+    height: 100vh;
+    padding: 3rem 5rem;
+    width: 100vw;
+}
+
 .cursor-pointer {
   cursor: pointer;
 }

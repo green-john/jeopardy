@@ -1,6 +1,9 @@
-<%= if @selected do %>
-<section class="question-display">
-  <div><%= @selected.q %></div>
+<%= if @selected_question do %>
+<section class="question-display" phx-window-keyup="toggle_show_answer">
+  <div class="question-display-question"><%= @selected_question %></div>
+  <%= if @showing_answer %>
+    <div class="question-display-answer"><%= @selected_answer %></div>
+  <% end %>
 </section>
 <% else %>
 <section class="board-container">
@@ -12,7 +15,7 @@
       <%= for p <- [100, 200, 300, 400, 500] do %>
         <%= if is_question_available?(@board, category, p) do %>
           <div
-            phx-click="select-question"
+            phx-click="select_question"
             phx-value-category="<%= category %>"
             phx-value-points="<%= p %>"
             class="board-square cursor-pointer"><%= p %></div>

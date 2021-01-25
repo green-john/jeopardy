@@ -1,5 +1,5 @@
 defmodule Jeopardy.Core do
-  def extract_question(board, category, points) do
+  def extract_question(board, category, points) when is_integer(points) do
     IO.inspect(category)
     IO.inspect(points)
     IO.inspect(board)
@@ -7,9 +7,13 @@ defmodule Jeopardy.Core do
 
     case Map.has_key?(board.questions, category) do
       true ->
+        IO.inspect "true here0"
         q_in_cat = board.questions[category]
+        IO.inspect "true here1"
         qa = Map.get(q_in_cat, points, [])
+        IO.inspect "true here2"
         questions = Map.put(board.questions, category, Map.delete(q_in_cat, points))
+        IO.inspect qa
 
         {
           %{board | questions: questions},
@@ -17,6 +21,8 @@ defmodule Jeopardy.Core do
         }
 
       false ->
+        IO.inspect "false here"
+        q_in_cat = board.questions[category]
         {board, []}
     end
   end

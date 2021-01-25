@@ -27,7 +27,7 @@ defmodule Jeopardy.GameAgent do
     access_data(game_id, fn game -> game.board end, 0)
   end
 
-  def get_current_selected(game_id) do
+  def get_selelected(game_id) do
     access_data(game_id,
       fn game ->
         game.selected
