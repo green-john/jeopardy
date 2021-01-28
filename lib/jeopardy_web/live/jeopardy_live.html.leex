@@ -1,8 +1,16 @@
 <%= if @selected_question do %>
 <section class="question-display" phx-window-keyup="toggle_show_answer">
   <div class="question-display-question"><%= @selected_question %></div>
-  <%= if @showing_answer %>
+  <%= if @showing_answer do %>
     <div class="question-display-answer"><%= @selected_answer %></div>
+
+    <div class="question-display-user-scores">
+    <%= for {user_id, score} <- @scores do %>
+      <button phx-click="user_is_right" phx-value-user_id="<%= user_id %>" class="user-score">
+        <%= user_id %>: <%= score %>
+      </button>
+    <% end %>
+    </div>
   <% end %>
 </section>
 <% else %>

@@ -15,7 +15,7 @@ defmodule JeopardyWeb.JeopardyLive do
            showing_answer: true,
            selected_question: q,
            selected_answer: a,
-           selected_points: points,
+           selected_points: points
          )}
 
       nil -> 
@@ -27,7 +27,7 @@ defmodule JeopardyWeb.JeopardyLive do
            showing_answer: false,
            selected_question: nil,
            selected_answer: nil,
-           selected_points: nil,
+           selected_points: nil
          )}
     end
   end
@@ -40,8 +40,6 @@ defmodule JeopardyWeb.JeopardyLive do
     game_id = socket.assigns.game_id
     GameAgent.select_question(game_id, category, String.to_integer(points))
 
-    IO.inspect(GameAgent.get_selelected(game_id))
-
     [q: q, a: a, points: points] = GameAgent.get_selelected(game_id)
 
     {:noreply,
@@ -50,15 +48,33 @@ defmodule JeopardyWeb.JeopardyLive do
        scores: GameAgent.get_scores(game_id),
        selected_question: q,
        selected_answer: a,
-       selected_points: points,
+       selected_points: points
      )}
   end
 
-  def handle_event("toggle_show_answer", %{"key" => "Space"}, socket) do
+  def handle_event("toggle_show_answer", %{"key" => " "}, socket) do
     showing = socket.assigns.showing_answer
-    {:noreply, assign(socket, showing_answer: not showing)}
+    {:noreply, assign(socket, showing_answer: Kernel.not(showing))}
   end
-  def handle_event("toggle_show_answer-answer", _params, socket), do: {:noreply, socket}
+  def handle_event("toggle_show_answer", _params, socket), do: {:noreply, socket}
+
+  def handle_event(
+    "user_is_right",
+    %{"user_id" => user_id},
+    socket
+  ) do
+    game_id = socket.assigns.game_id
+    GameAgent.user_answered(game_id, user_id)
+
+    {:noreply, assign(socket,
+      board: GameAgent.get_board(game_id),
+      scores: GameAgent.get_scores(game_id),
+      showing_answer: false,
+      selected_question: nil,
+      selected_answer: nil,
+      selected_points: nil
+    )}
+  end
 
 
   def is_question_available?(board, category, points) do

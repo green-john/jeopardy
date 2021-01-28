@@ -96,6 +96,7 @@
 
 body {
   margin: 0 auto;
+  font-size: 16px;
 }
 
 .board-container {
@@ -127,10 +128,37 @@ body {
 .question-display {
     background-color: rgb(64, 50, 255);
     color: rgb(240, 240, 240);
-    font-size: 5rem;
     height: 100vh;
     padding: 3rem 5rem;
     width: 100vw;
+}
+
+.question-display-question {
+    font-size: 6rem;
+}
+
+.question-display-answer {
+    border-top: 3px solid;
+    font-size: 4rem;
+    margin-top: 2rem;
+    padding-top: 2rem;
+}
+
+.question-display-user-scores {
+    font-size: 1.5rem;
+    padding: 1rem;
+
+    .user-score {
+        border: 2px solid;
+        background-color: rgb(64, 50, 255);
+        color: rgb(240, 240, 240);
+        font-size: 1.4rem;
+        padding: 1rem;
+    }
+}
+
+.hide-in-place {
+    opacity: 0;
 }
 
 .cursor-pointer {
